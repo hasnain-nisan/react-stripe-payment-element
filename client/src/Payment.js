@@ -14,14 +14,28 @@ function Payment() {
   }, []);
 
   useEffect(() => {
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MTBhYjc2MjI5NjQ4Y2NjZGMzY2I4NCIsImlhdCI6MTczMDYwMzIxNSwiZXhwIjoxNzMxMjA4MDE1fQ.1x9l6jWapAQW-F9da1JgFd7WX27qjrT7ibBGX4Kt-fk";
+    
     fetch("http://localhost:5000/api/v1/mentee/createPaymentIntent", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({}),
-    }).then(async (result) => {
-      var { clientSecret } = await result.json();
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        mentorId: "6718d0320d5b01f2ec035d23",
+        totalAmount: 1200,
+        platformFee: 200,
+        timeZone: "Asia/Dhaka",
+        start: "2024-11-04T04:30:00+06:00",
+        end: "2024-11-04T05:00:00+06:00"
+      }),
+    })
+    .then(async (result) => {
+      const { clientSecret } = await result.json();
       setClientSecret(clientSecret);
-    });
+    })
+    .catch(error => console.error("Error creating PaymentIntent:", error));
   }, []);
 
   // Custom styling options for PaymentElement
