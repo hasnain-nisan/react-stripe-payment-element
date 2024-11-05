@@ -25,11 +25,7 @@ body {
 } */
 
 button {
-  background-color: var(--accent-color);
-}
-
-button {
-  background: var(--accent-color);
+  /* background: var(--accent-color); */
   border-radius: var(--radius);
   color: white;
   border: 0;
