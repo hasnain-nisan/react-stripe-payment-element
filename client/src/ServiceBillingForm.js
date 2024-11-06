@@ -1,21 +1,20 @@
 import React, { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const ServiceBillingForm = () => {
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get('token');
   const [serviceType, setServiceType] = useState("volunteer");
   const [hourlyRate, setHourlyRate] = useState("");
   const [accountHolderName, setAccountHolderName] = useState("");
   const [bsb, setBsb] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleHourlyRateChange = (e) => {
     const rate = e.target.value;
     setHourlyRate(rate);
-    if (rate && rate <= 50) {
-      setError("Please enter more than $50");
-    } else {
-      setError("");
-    }
   };
 
   const handleSubmit = async (e) => {
@@ -23,7 +22,7 @@ const ServiceBillingForm = () => {
 
     // Construct the data object
     const data = {
-      token: "29e4285ace34d4a8aa4fb1cd58cc5952505641d253041f62bf7e79b54ec1f19a", // Replace with actual token
+      token: token,
       paidOrVoluntary: serviceType,
       amountPerHour: serviceType === "paid" ? hourlyRate : 0,
       accountHolderName: serviceType === "paid" ? accountHolderName : null,
@@ -48,7 +47,8 @@ const ServiceBillingForm = () => {
         } else {
           // Handle success without redirect
           console.log("Form submitted successfully:", result);
-          alert("Form submitted successfully!");
+          // alert("Form submitted successfully!");
+          navigate('/login')
         }
       } else {
         // Handle errors from the backend
@@ -85,7 +85,7 @@ const ServiceBillingForm = () => {
                 <span role="img" aria-label="volunteer" className={serviceType === "volunteer" ? "text-white" : "text-blue-500"}>👐</span>
                 <div>
                   <p className="font-semibold">Volunteer</p>
-                  <p className="text-sm">You won't be paid for your mentoring services</p>
+                  <p className="text-sm">You won&apos;t be paid for your mentoring services</p>
                 </div>
               </div>
             </button>
